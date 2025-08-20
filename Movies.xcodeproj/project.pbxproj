@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		41C653CE2E564B25005645A3 /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movies.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		41C653CE2E564B25005645A3 /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Movies.app; path = "/Users/ali/Documents/repos/Movies/build/Debug-iphoneos/Movies.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -51,7 +51,6 @@
 			isa = PBXGroup;
 			children = (
 				419E82B32E5619BF004B561F /* Movies */,
-				41C653CE2E564B25005645A3 /* Movies.app */,
 			);
 			sourceTree = "<group>";
 		};
