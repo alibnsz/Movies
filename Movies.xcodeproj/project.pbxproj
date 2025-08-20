@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		419E82C32E562B99004B561F /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Movies.app; path = "/Users/ali/Documents/repos/Movies/build/Debug-iphoneos/Movies.app"; sourceTree = "<absolute>"; };
+		41C653CE2E564B25005645A3 /* Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -51,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				419E82B32E5619BF004B561F /* Movies */,
+				41C653CE2E564B25005645A3 /* Movies.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,7 +78,7 @@
 				419E82E42E563B78004B561F /* Alamofire */,
 			);
 			productName = Movies;
-			productReference = 419E82C32E562B99004B561F /* Movies.app */;
+			productReference = 41C653CE2E564B25005645A3 /* Movies.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
