@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController, UITableViewDataSource {
     
-    let sectionTitles: [String] = ["Trending Movies", "Popular", "Trending TV Shows", "Upcoming Movies", "Top Raited"]
+    let sectionTitles: [String] = ["Trending Movies", "Trending TV Shows", "Popular", "Upcoming Movies", "Top Raited"]
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -29,6 +29,8 @@ class HomeViewController: UIViewController, UITableViewDataSource {
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
         homeFeedTable.tableHeaderView = headerView
+        
+        fetchData()
     }
     
     private func configureNavBar() {
@@ -46,6 +48,17 @@ class HomeViewController: UIViewController, UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
+    }
+    
+    private func fetchData() {
+        ApiCaller.shared.getPopularMovies { results in
+            switch results {
+            case .success(let movies):
+            print(movies)
+            case .failure(let error):
+            print(error)
+            }
+        }
     }
 }
 
@@ -85,7 +98,7 @@ extension HomeViewController: UITableViewDelegate {
         header.textLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
         header.textLabel?.textColor = .label
-        header.textLabel?.text = header.textLabel?.text?.lowercased()
+        header.textLabel?.text = header.textLabel?.text?.capitalizingFirstLetter()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
