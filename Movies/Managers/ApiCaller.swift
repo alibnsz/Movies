@@ -65,8 +65,8 @@ class ApiCaller {
     // MARK: - Public API Calls
     
     /// Fetch trending movies (daily)
-    func getTrendingMovies(completion: @escaping (Result<[Movie], ApiError>) -> Void) {
-        fetchData(endpoint: "/trending/movie/day") { (result: Result<TrendingMovieResponse, ApiError>) in
+    func getTrendingMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
+        fetchData(endpoint: "/trending/movie/day") { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
                 completion(.success(response.results))
@@ -77,8 +77,8 @@ class ApiCaller {
     }
     
     /// Fetch trending TV shows (daily)
-    func getTrendingTVShows(completion: @escaping (Result<[TvShow], ApiError>) -> Void) {
-        fetchData(endpoint: "/trending/tv/day") { (result: Result<TrendingTvShowResponse, ApiError>) in
+    func getTrendingTVShows(completion: @escaping (Result<[Title], ApiError>) -> Void) {
+        fetchData(endpoint: "/trending/tv/day") { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
                 completion(.success(response.results))
@@ -89,11 +89,11 @@ class ApiCaller {
     }
     
     /// Fetch upcoming movies
-    func getUpcomingMovies(completion: @escaping (Result<[Movie], ApiError>) -> Void) {
+    func getUpcomingMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
         fetchData(
             endpoint: "/movie/upcoming",
             parameters: ["language": "en-US", "page": 1]
-        ) { (result: Result<TrendingMovieResponse, ApiError>) in
+        ) { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
                 completion(.success(response.results))
@@ -104,11 +104,11 @@ class ApiCaller {
     }
     
     /// Fetch popular movies
-    func getPopularMovies(completion: @escaping (Result<[Movie], ApiError>) -> Void) {
+    func getPopularMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
         fetchData(
             endpoint: "/movie/popular",
             parameters: ["language": "en-US", "page": 1]
-        ) { (result: Result<TrendingMovieResponse, ApiError>) in
+        ) { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
                 completion(.success(response.results))
@@ -119,11 +119,11 @@ class ApiCaller {
     }
     
     /// Fetch popular movies
-    func getTopRatedMovies(completion: @escaping (Result<[Movie], ApiError>) -> Void) {
+    func getTopRatedMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
         fetchData(
             endpoint: "/movie/top_rated",
             parameters: ["language": "en-US", "page": 1]
-        ) { (result: Result<TrendingMovieResponse, ApiError>) in
+        ) { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
                 completion(.success(response.results))
