@@ -31,6 +31,8 @@ class TitleCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         posterImageView.frame = contentView.bounds
+        posterImageView.layer.cornerRadius = 8
+        posterImageView.clipsToBounds = true
     }
     
     public func configure(with model: String) {

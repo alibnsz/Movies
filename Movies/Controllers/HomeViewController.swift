@@ -32,7 +32,7 @@ class HomeViewController: UIViewController, UITableViewDataSource {
         
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
-        
+        homeFeedTable.separatorStyle = .none
         configureNavBar()
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
