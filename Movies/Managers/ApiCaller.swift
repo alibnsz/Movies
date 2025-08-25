@@ -92,7 +92,10 @@ class ApiCaller {
     func getUpcomingMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
         fetchData(
             endpoint: "/movie/upcoming",
-            parameters: ["language": "en-US", "page": 1]
+            parameters: [
+                "language": "en-US",
+                "page": 1
+            ]
         ) { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
@@ -107,7 +110,10 @@ class ApiCaller {
     func getPopularMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
         fetchData(
             endpoint: "/movie/popular",
-            parameters: ["language": "en-US", "page": 1]
+            parameters: [
+                "language": "en-US",
+                "page": 1
+            ]
         ) { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
@@ -122,7 +128,10 @@ class ApiCaller {
     func getTopRatedMovies(completion: @escaping (Result<[Title], ApiError>) -> Void) {
         fetchData(
             endpoint: "/movie/top_rated",
-            parameters: ["language": "en-US", "page": 1]
+            parameters: [
+                "language": "en-US",
+                "page": 1
+            ]
         ) { (result: Result<TitleResponse, ApiError>) in
             switch result {
             case .success(let response):
@@ -133,6 +142,51 @@ class ApiCaller {
         }
     }
     
+    /// Fetch discover movies
+    func getDiscoverMovies(completion : @escaping (Result<[Title], ApiError>) -> Void){
+        fetchData(
+            endpoint: "/discover/movie",
+            parameters: [
+                "include_adult": "false",
+                "include_video": "false",
+                "language": "en-US",
+                "page": 1,
+                "sort_by": "popularity.desc"
+            ]
+        ) { (result: Result<TitleResponse, ApiError>) in
+            switch result {
+            case .success(let response):
+                completion(.success(response.results))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
-    
+    /// Search movie
+    func search(with query: String, completion: @escaping (Result<[Title], ApiError>) -> Void) {
+        guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        fetchData(
+            endpoint: "/search/movie",
+            parameters: [
+                "query": encodedQuery,
+                "include_adult": "false",
+                "language": "en-US",
+                "page": 1
+            ]
+        ) { (result: Result<TitleResponse, ApiError>) in
+            switch result {
+            case .success(let response):
+                completion(.success(response.results))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+
+
 }
