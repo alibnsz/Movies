@@ -11,6 +11,8 @@ import Alamofire
 struct Constants {
     static let API_KEY = "9258962deecd1e523d68d65d80805203"
     static let baseURL = "https://api.themoviedb.org/3"
+    static let YoutubeAPI_KEY = "AIzaSyDUFGbVc-FVRtyksrYo0vq8KeivxDxX-5s"
+    static let YoutubeBaseURL = "https://youtube.googleapis.com/youtube/v3/search?"
 }
 
 enum ApiError: Error {
@@ -53,6 +55,26 @@ class ApiCaller {
                     }
                 case .failure(let error):
                     print("❌ Network error: \(error)")
+                    if let afError = error.asAFError, afError.responseCode == 401 {
+                        completion(.failure(.unauthorized))
+                    } else {
+                        completion(.failure(.failedToGetData))
+                    }
+                }
+            }
+    }
+    
+    private func fetchYouTubeData<T: Decodable>(
+        parameters: [String: Any],
+        completion: @escaping (Result<T, ApiError>) -> Void
+    ) {
+        AF.request(Constants.YoutubeBaseURL, parameters: parameters)
+            .validate()
+            .responseDecodable(of: T.self) { response in
+                switch response.result {
+                case .success(let decoded):
+                    completion(.success(decoded))
+                case .failure(let error):
                     if let afError = error.asAFError, afError.responseCode == 401 {
                         completion(.failure(.unauthorized))
                     } else {
@@ -185,6 +207,46 @@ class ApiCaller {
                 completion(.failure(error))
             }
         }
+    }
+    
+    /// fetch youtube video
+    func getBestTrailer(for query: String, completion: @escaping (Result<VideoElement, ApiError>) -> Void) {
+        guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        let parameters: [String: Any] = [
+            "q": encodedQuery + " trailer",
+            "key": Constants.YoutubeAPI_KEY,
+            "part": "snippet",
+            "maxResults": 5
+        ]
+
+        AF.request(Constants.YoutubeBaseURL, parameters: parameters)
+            .validate()
+            .responseDecodable(of: YoutubeSearchResponse.self) { response in
+                switch response.result {
+                case .success(let youtubeResponse):
+                    // Videoları filtrele
+                    let videos = youtubeResponse.items.filter { $0.id.kind == "youtube#video" }
+                    
+                    // Başlığa göre öncelik ver
+                    if let bestMatch = videos.first(where: { $0.snippet.title.lowercased().contains(query.lowercased()) && $0.snippet.title.lowercased().contains("trailer") }) {
+                        completion(.success(bestMatch))
+                    } else if let firstVideo = videos.first {
+                        completion(.success(firstVideo)) // fallback
+                    } else {
+                        completion(.failure(.failedToGetData))
+                    }
+                case .failure(let error):
+                    if let afError = error.asAFError, afError.responseCode == 401 {
+                        completion(.failure(.unauthorized))
+                    } else {
+                        completion(.failure(.failedToGetData))
+                    }
+                }
+            }
     }
 
 
