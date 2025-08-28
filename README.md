@@ -50,6 +50,35 @@
   <img width="1024" height="1024" src="https://github.com/user-attachments/assets/46f2487c-e4f5-4ce4-b763-5d9ffdba3364" />
 </p>
 
+## Getting Started
+
+- **Requirements**
+  - Xcode 15+
+  - iOS 15+
+  - Swift Package Manager (SPM)
+
+- **Setup**
+  1. Get API Keys:
+     - **TMDB API Key**: Register at `https://www.themoviedb.org/`
+     - **YouTube Data API Key**: Get from `https://console.developers.google.com/`
+  2. Create `Movies/Config/APIConfig.plist` file (see template below)
+  3. Add your API keys to the plist file
+  4. Open `Movies.xcodeproj` and build/run
+
+- **API Configuration Template**
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+      <key>TMDB_API_KEY</key>
+      <string>YOUR_TMDB_API_KEY_HERE</string>
+      <key>YOUTUBE_API_KEY</key>
+      <string>YOUR_YOUTUBE_API_KEY_HERE</string>
+  </dict>
+  </plist>
+  ```
+
 ## Purpose
 Moovies provides a fast and modern interface to discover, search, and view movie details.  
 Includes **YouTube trailers**, **offline trailer downloads**, and a **watchlist feature**.
