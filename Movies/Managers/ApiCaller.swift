@@ -9,9 +9,7 @@ import Foundation
 import Alamofire
 
 struct Constants {
-    static let API_KEY = "9258962deecd1e523d68d65d80805203"
     static let baseURL = "https://api.themoviedb.org/3"
-    static let YoutubeAPI_KEY = "AIzaSyDUFGbVc-FVRtyksrYo0vq8KeivxDxX-5s"
     static let YoutubeBaseURL = "https://youtube.googleapis.com/youtube/v3/search?"
 }
 
@@ -39,7 +37,7 @@ class ApiCaller {
         }
         
         var allParameters = parameters
-        allParameters["api_key"] = Constants.API_KEY
+        allParameters["api_key"] = APIConfigManager.shared.tmdbAPIKey
         
         AF.request(url, parameters: allParameters)
             .validate()
@@ -218,7 +216,7 @@ class ApiCaller {
 
         let parameters: [String: Any] = [
             "q": encodedQuery + " trailer",
-            "key": Constants.YoutubeAPI_KEY,
+            "key": APIConfigManager.shared.youtubeAPIKey,
             "part": "snippet",
             "maxResults": 5
         ]
