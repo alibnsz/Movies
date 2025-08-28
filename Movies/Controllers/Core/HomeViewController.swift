@@ -75,6 +75,8 @@ extension HomeViewController: UITableViewDelegate {
             indexPath) as? CollectionViewTableViewCell else {
             return UITableViewCell()
         }
+            
+        cell.delegate = self
         
         switch indexPath.section {
         case Sections.trendingMovies.rawValue:
@@ -157,3 +159,12 @@ extension HomeViewController: UITableViewDelegate {
     }
 }
 
+extension HomeViewController: CollectionViewTableViewCellDelegate {
+    func collectionViewTableViewCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = TitlePreviewViewController()
+            vc.configure(with: viewModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}

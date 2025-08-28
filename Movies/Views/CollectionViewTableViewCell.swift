@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol CollectionViewTableViewCellDelegate: AnyObject {
+    func collectionViewTableViewCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel)
+}
+
 class CollectionViewTableViewCell: UITableViewCell, UICollectionViewDataSource {
 
     static let identifier = "CollectionViewTableViewCell"
+    
+    weak var delegate: CollectionViewTableViewCellDelegate?
     
     private var titles: [Title] = [Title]()
     
@@ -66,6 +72,30 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titles.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let title = titles[indexPath.row]
+        guard let titleName = title.originalTitle ?? title.originalName else {
+            return
+        }
+        
+        ApiCaller.shared.getBestTrailer(for: titleName) { [weak self] result in
+            switch result {
+            case .success(let videoElement):
+                
+                let title = self?.titles[indexPath.row]
+                guard let titleOverView = title?.overview else { return }
+                guard let strongSelf = self else { return }
+                let viewModel = TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: titleOverView)
+                self?.delegate?.collectionViewTableViewCell(strongSelf, viewModel: viewModel)
+            case .failure(let error):
+                print("Hata: \(error.localizedDescription)")
+            }
+        }
+
     }
     
 }
