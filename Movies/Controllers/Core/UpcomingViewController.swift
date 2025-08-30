@@ -25,7 +25,8 @@ class UpcomingViewController: UIViewController {
         title = "Upcoming"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
-        
+        navigationController?.navigationBar.tintColor = .white
+
         view.addSubview(upcomingTable)
         upcomingTable.delegate = self
         upcomingTable.dataSource = self
@@ -70,5 +71,27 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let title = titles[indexPath.row]
+        
+        guard let titleName = title.originalTitle ?? title.originalName else {
+            return
+        }
+        
+        ApiCaller.shared.getBestTrailer(for: titleName) { [ weak self ] result in
+            switch result {
+            case .success(let videoElement):
+                DispatchQueue.main.async {
+                    let vc = TitlePreviewViewController()
+                    vc.configure(with: TitlePreviewViewModel(title: titleName, youtubeVideo: videoElement, titleOverview: title.overview ?? ""))
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
